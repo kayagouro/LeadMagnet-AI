@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LeadMagnet AI — Aperçu landing</title>
+    <style>
+      :root { color-scheme: dark; }
+      body { margin:0; font-family: Inter, system-ui, sans-serif; background:#020617; color:#e2e8f0; }
+      .container { max-width:1100px; margin:0 auto; padding:0 24px; }
+      header { position:sticky; top:0; backdrop-filter: blur(8px); background:rgba(2,6,23,.9); border-bottom:1px solid #1e293b; }
+      nav { display:flex; align-items:center; justify-content:space-between; padding:16px 0; }
+      a { color:inherit; text-decoration:none; }
+      .links { display:flex; gap:24px; align-items:center; }
+      .cta { background:#06b6d4; color:#082f49; padding:10px 14px; border-radius:8px; font-weight:600; }
+      .hero { padding:80px 0; }
+      .badge { display:inline-block; border:1px solid #155e75; background:#083344; color:#67e8f9; border-radius:999px; padding:6px 12px; font-size:12px; }
+      h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.1; max-width:760px; margin:12px 0; }
+      p { color:#94a3b8; max-width:700px; }
+      .buttons { display:flex; gap:12px; margin-top:24px; flex-wrap:wrap; }
+      .btn { padding:12px 16px; border-radius:8px; font-weight:600; border:1px solid #334155; }
+      .btn.primary { background:#06b6d4; color:#082f49; border:none; }
+      section { padding:42px 0; }
+      .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-top:18px; }
+      .card { border:1px solid #1e293b; background:rgba(15,23,42,.7); border-radius:12px; padding:18px; }
+      .price { font-size:2rem; color:#f8fafc; font-weight:700; }
+      .muted { color:#94a3b8; font-size:.9rem; }
+      .switch { width:44px; height:24px; border-radius:20px; background:#334155; position:relative; border:none; cursor:pointer; }
+      .switch::after { content:""; width:16px; height:16px; border-radius:50%; background:#fff; position:absolute; top:4px; left:4px; transition:.2s; }
+      .switch.on { background:#06b6d4; }
+      .switch.on::after { left:24px; }
+      footer { border-top:1px solid #1e293b; padding:22px 0; color:#94a3b8; text-align:center; }
+      @media (max-width: 760px){ .links{display:none;} }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <a href="#hero"><strong>LeadMagnet AI</strong></a>
+          <div class="links">
+            <a href="#features">Fonctionnalités</a><a href="#proof">Résultats</a><a href="#pricing">Tarifs</a><a class="cta" href="#pricing">Essayer gratuitement</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      <section class="hero" id="hero">
+        <span class="badge">+2 300 équipes marketing utilisent LeadMagnet AI</span>
+        <h1>Transformez vos visiteurs en leads qualifiés avec une landing page moderne.</h1>
+        <p>Concevez, testez et optimisez vos lead magnets avec une expérience plus fluide, plus rapide et orientée conversion.</p>
+        <div class="buttons"><a class="btn primary" href="#pricing">Essayer gratuitement</a><a class="btn" href="#features">Voir la démo</a></div>
+      </section>
+
+      <section id="features">
+        <h2>Fonctionnalités orientées performance</h2>
+        <div class="grid">
+          <article class="card"><h3>Génération guidée par IA</h3><p>Créez des lead magnets personnalisés en quelques minutes.</p></article>
+          <article class="card"><h3>A/B testing intégré</h3><p>Testez vos titres, visuels et CTA pour améliorer vos conversions.</p></article>
+          <article class="card"><h3>Capture multicanal</h3><p>Publiez vos campagnes sur landing pages, emails et réseaux sociaux.</p></article>
+        </div>
+      </section>
+
+      <section id="pricing">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;">
+          <h2>Tarifs transparents</h2>
+          <div style="display:flex;align-items:center;gap:8px;"><span class="muted">Mensuel</span><button id="billing-toggle" class="switch on" role="switch" aria-checked="true" aria-label="Basculer vers facturation annuelle"></button><span class="muted">Annuel (-20%)</span></div>
+        </div>
+        <div class="grid" id="plans"></div>
+      </section>
+    </main>
+    <footer>© <span id="year"></span> LeadMagnet AI — Aperçu local pour validation UI.</footer>
+    <script>
+      const plans = [
+        { name: 'Starter', monthly: 29, users: '1 utilisateur', cta: 'Commencer' },
+        { name: 'Growth', monthly: 79, users: '5 utilisateurs', cta: 'Essayer 14 jours' },
+        { name: 'Scale', monthly: 159, users: 'Utilisateurs illimités', cta: 'Parler à un expert' },
+      ];
+      let yearly = true;
+      const plansNode = document.getElementById('plans');
+      const toggle = document.getElementById('billing-toggle');
+      function render() {
+        toggle.classList.toggle('on', yearly);
+        toggle.setAttribute('aria-checked', yearly ? 'true' : 'false');
+        plansNode.innerHTML = plans.map((p) => {
+          const price = yearly ? Math.round(p.monthly * 0.8) : p.monthly;
+          return `<article class="card"><h3>${p.name}</h3><p class="muted">${p.users}</p><p class="price">${price}€ <span class="muted">/mois</span></p><button class="btn" type="button">${p.cta}</button></article>`;
+        }).join('');
+      }
+      toggle.addEventListener('click', () => { yearly = !yearly; render(); });
+      document.getElementById('year').textContent = new Date().getFullYear();
+      render();
+    </script>
+  </body>
+</html>
