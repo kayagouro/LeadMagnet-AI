@@ -18,6 +18,21 @@ const features = [
   },
 ];
 
+const testimonials = [
+  {
+    quote: "Nous avons doublé nos leads qualifiés en 6 semaines.",
+    author: "Camille, Head of Growth",
+  },
+  {
+    quote: "L'équipe marketing publie ses campagnes 3x plus vite.",
+    author: "Nassim, CMO",
+  },
+  {
+    quote: "On voit enfin clairement ce qui convertit.",
+    author: "Sarah, Demand Gen Manager",
+  },
+];
+
 const monthlyPlans = [
   { name: "Starter", price: 29, users: "1 utilisateur", cta: "Commencer" },
   { name: "Growth", price: 79, users: "5 utilisateurs", cta: "Essayer 14 jours" },
@@ -37,8 +52,10 @@ const Index = () => {
     [yearlyBilling],
   );
 
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen scroll-smooth bg-slate-950 text-slate-100">
       <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a className="text-lg font-semibold tracking-tight" href="#hero">
@@ -46,6 +63,7 @@ const Index = () => {
           </a>
 
           <button
+            aria-controls="mobile-nav"
             aria-expanded={mobileMenuOpen}
             aria-label="Ouvrir le menu"
             className="rounded-md border border-slate-700 px-3 py-2 text-sm md:hidden"
@@ -58,6 +76,9 @@ const Index = () => {
           <div className="hidden items-center gap-8 text-sm md:flex">
             <a className="hover:text-cyan-300" href="#features">
               Fonctionnalités
+            </a>
+            <a className="hover:text-cyan-300" href="#proof">
+              Résultats
             </a>
             <a className="hover:text-cyan-300" href="#pricing">
               Tarifs
@@ -75,14 +96,17 @@ const Index = () => {
         </nav>
 
         {mobileMenuOpen && (
-          <div className="space-y-3 border-t border-slate-800 px-6 py-4 md:hidden">
-            <a className="block text-sm" href="#features" onClick={() => setMobileMenuOpen(false)}>
+          <div className="space-y-3 border-t border-slate-800 px-6 py-4 md:hidden" id="mobile-nav">
+            <a className="block text-sm" href="#features" onClick={closeMobileMenu}>
               Fonctionnalités
             </a>
-            <a className="block text-sm" href="#pricing" onClick={() => setMobileMenuOpen(false)}>
+            <a className="block text-sm" href="#proof" onClick={closeMobileMenu}>
+              Résultats
+            </a>
+            <a className="block text-sm" href="#pricing" onClick={closeMobileMenu}>
               Tarifs
             </a>
-            <a className="block text-sm" href="#footer" onClick={() => setMobileMenuOpen(false)}>
+            <a className="block text-sm" href="#footer" onClick={closeMobileMenu}>
               Contact
             </a>
           </div>
@@ -125,15 +149,29 @@ const Index = () => {
           </div>
         </section>
 
+        <section className="mx-auto max-w-6xl px-6 py-16" id="proof">
+          <h2 className="text-3xl font-semibold tracking-tight">Des résultats mesurables</h2>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {testimonials.map((item) => (
+              <figure className="rounded-xl border border-slate-800 bg-slate-900/50 p-6" key={item.author}>
+                <blockquote className="text-slate-200">“{item.quote}”</blockquote>
+                <figcaption className="mt-4 text-sm text-cyan-300">{item.author}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
         <section className="mx-auto max-w-6xl px-6 py-16" id="pricing">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <h2 className="text-3xl font-semibold tracking-tight">Tarifs transparents</h2>
-            <label className="inline-flex items-center gap-3 rounded-full border border-slate-700 px-4 py-2 text-sm">
+            <div className="inline-flex items-center gap-3 rounded-full border border-slate-700 px-4 py-2 text-sm">
               <span>Mensuel</span>
               <button
+                aria-checked={yearlyBilling}
                 aria-label="Basculer vers facturation annuelle"
                 className={`h-6 w-11 rounded-full p-1 transition ${yearlyBilling ? "bg-cyan-500" : "bg-slate-700"}`}
                 onClick={() => setYearlyBilling((current) => !current)}
+                role="switch"
                 type="button"
               >
                 <span
@@ -141,7 +179,7 @@ const Index = () => {
                 />
               </button>
               <span>Annuel (-20%)</span>
-            </label>
+            </div>
           </div>
 
           <div className="mt-8 grid gap-5 md:grid-cols-3">
